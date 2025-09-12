@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>⚖️ Legal AI Copilot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>⚖️ Legal AI Copilot</h1>
+    <p>Upload a legal document and let AI help you understand it.</p>
+
+    <input type="file" id="fileInput" accept=".pdf">
+    <button onclick="summarize()">Summarize</button>
+    <button onclick="analyzeRisks()">Analyze Risks</button>
+
+    <div id="output"></div>
+  </div>
+
+  <script>
+    async function summarize() {
+      const file = document.getElementById("fileInput").files[0];
+      let formData = new FormData();
+      formData.append("file", file);
+
+      let res = await fetch("http://127.0.0.1:8000/summarize", { method: "POST", body: formData });
+      let data = await res.json();
+      document.getElementById("output").innerHTML = "<h2>📄 Summary</h2><p>" + data.summary + "</p>";
+    }
+
+    async function analyzeRisks() {
+      const file = document.getElementById("fileInput").files[0];
+      let formData = new FormData();
+      formData.append("file", file);
+
+      let res = await fetch("http://127.0.0.1:8000/analyze_risks", { method: "POST", body: formData });
+      let data = await res.json();
+      document.getElementById("output").innerHTML = "<h2>⚠️ Risks</h2><p>" + data.risks + "</p>";
+    }
+  </script>
+</body>
+</html>
